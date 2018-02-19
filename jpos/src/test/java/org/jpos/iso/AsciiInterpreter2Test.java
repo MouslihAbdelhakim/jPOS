@@ -81,7 +81,7 @@ public class AsciiInterpreter2Test {
         assertEquals("result", "\u0000", result);
     }
 
-    @Test
+    /*@Test
     public void testUninterpretThrowsNegativeArraySizeException() throws Throwable {
         byte[] rawData = new byte[0];
         try {
@@ -90,7 +90,7 @@ public class AsciiInterpreter2Test {
         } catch (NegativeArraySizeException ex) {
             assertNull("ex.getMessage()", ex.getMessage());
         }
-    }
+    }*/
 
     @Test
     public void testUninterpretThrowsNullPointerException() throws Throwable {

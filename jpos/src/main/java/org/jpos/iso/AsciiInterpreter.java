@@ -38,6 +38,11 @@ public class AsciiInterpreter implements Interpreter
     @Override
     public void interpret(String data, byte[] b, int offset)
     {
+        if(offset < 0 || offset + data.length() > b.length)
+            throw new ArrayIndexOutOfBoundsException(
+                String.format("Required offset => 0 and  offset + String.length <= array.length." +
+                        " But found offset=%d, String.length=%d, array.length=%d",offset, data.length(), b.length)
+        );
         System.arraycopy(data.getBytes(ISOUtil.CHARSET), 0, b, offset, data.length());
     }
 
@@ -47,6 +52,11 @@ public class AsciiInterpreter implements Interpreter
      */
     @Override
     public String uninterpret (byte[] rawData, int offset, int length) {
+        if(offset < 0 || length < 0 || offset + length > rawData.length )
+            throw new ArrayIndexOutOfBoundsException(
+                    String.format("Required offset => 0 and length => 0 and offset + length <= array.length." +
+                            " But found offset=%d, length=%d, array.length=%d",offset, length, rawData.length)
+            );
         byte[] ret = new byte[length];
         try {
             System.arraycopy(rawData, offset, ret, 0, length);

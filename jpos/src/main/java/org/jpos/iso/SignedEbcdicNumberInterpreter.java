@@ -34,6 +34,11 @@ public class SignedEbcdicNumberInterpreter implements Interpreter
     public static final SignedEbcdicNumberInterpreter INSTANCE = new SignedEbcdicNumberInterpreter();
 
     public void interpret(String data, byte[] targetArray, int offset) {
+        if(offset < 0 || offset + data.length() > targetArray.length)
+            throw new ArrayIndexOutOfBoundsException(
+                    String.format("Required offset => 0 and  offset + String.length <= array.length." +
+                            " But found offset=%d, String.length=%d, array.length=%d",offset, data.length(), targetArray.length)
+            );
         boolean negative = data.startsWith("-");
         if (negative) {
             ISOUtil.asciiToEbcdic(data.substring(1), targetArray, offset);
@@ -44,6 +49,11 @@ public class SignedEbcdicNumberInterpreter implements Interpreter
     }
 
     public String uninterpret(byte[] rawData, int offset, int length) {
+        if(offset < 0 || length < 0 || offset + length > rawData.length )
+            throw new ArrayIndexOutOfBoundsException(
+                    String.format("Required offset => 0 and length => 0 and offset + length <= array.length." +
+                            " But found offset=%d, length=%d, array.length=%d",offset, length, rawData.length)
+            );
         boolean negative = (byte) (rawData[offset + length - 1] & 0xF0) == (byte)0xD0;
         rawData[offset + length - 1] = (byte) (rawData[offset + length - 1] | 0xF0);
         return (negative ? "-" : "") + ISOUtil.ebcdicToAscii(rawData, offset, length);

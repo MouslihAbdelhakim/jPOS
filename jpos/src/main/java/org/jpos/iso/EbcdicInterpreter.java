@@ -36,6 +36,11 @@ public class EbcdicInterpreter implements Interpreter
      */
     public void interpret(String data, byte[] b, int offset)
     {
+        if(offset < 0 || offset + data.length() > b.length)
+            throw new ArrayIndexOutOfBoundsException(
+                String.format("Required offset => 0 and  offset + String.length <= array.length." +
+                    " But found offset=%d, String.length=%d, array.length=%d",offset, data.length(), b.length)
+            );
         ISOUtil.asciiToEbcdic(data, b, offset);
     }
 
@@ -45,6 +50,11 @@ public class EbcdicInterpreter implements Interpreter
      */
     public String uninterpret(byte[] rawData, int offset, int length)
     {
+        if(offset < 0 || length < 0 || offset + length > rawData.length )
+            throw new ArrayIndexOutOfBoundsException(
+                String.format("Required offset => 0 and length => 0 and offset + length <= array.length." +
+                " But found offset=%d, length=%d, array.length=%d",offset, length, rawData.length)
+            );
         return ISOUtil.ebcdicToAscii(rawData, offset, length);
     }
 
